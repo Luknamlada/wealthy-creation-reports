@@ -1272,6 +1272,20 @@
 
   <script>
     const STORAGE_KEY = 'wealthyCreationReportSystemV1';
+    const FIREBASE_COLLECTIONS = {
+      users: 'wc_users',
+      reports: 'wc_reports'
+    };
+
+    const firebaseConfig = {
+      apiKey: '',
+      authDomain: '',
+      projectId: '',
+      storageBucket: '',
+      messagingSenderId: '',
+      appId: ''
+    };
+
     const todayKey = () => new Date().toISOString().slice(0, 10);
 
     const roles = {
@@ -1355,6 +1369,9 @@
     let selectedPeriod = getCurrentPeriod();
     let reportImages = [];
     let collaborators = [];
+    let firebaseReady = false;
+    let firestoreDb = null;
+    let firestoreApi = null;
 
     const loginScreen = document.getElementById('loginScreen');
     const appShell = document.getElementById('appShell');
@@ -1388,6 +1405,94 @@
 
     function saveState() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      syncStateToFirebase();
+    }
+
+    function hasFirebaseConfig() {
+      return Boolean(
+        firebaseConfig.apiKey &&
+        firebaseConfig.authDomain &&
+        firebaseConfig.projectId &&
+        firebaseConfig.appId
+      );
+    }
+
+    async function initializeFirebase() {
+      if (!hasFirebaseConfig()) {
+        return;
+      }
+
+      try {
+        const appModule = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js');
+        const firestoreModule = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js');
+        const app = appModule.initializeApp(firebaseConfig);
+
+        firestoreDb = firestoreModule.getFirestore(app);
+        firestoreApi = {
+          collection: firestoreModule.collection,
+          deleteDoc: firestoreModule.deleteDoc,
+          doc: firestoreModule.doc,
+          getDocs: firestoreModule.getDocs,
+          setDoc: firestoreModule.setDoc
+        };
+        firebaseReady = true;
+        await loadStateFromFirebase();
+        showToast('เชื่อมต่อ Firebase แล้ว', 'ข้อมูลผู้ใช้และรายงานจะซิงก์ร่วมกันผ่าน Firestore', 'success');
+      } catch (error) {
+        firebaseReady = false;
+        console.error(error);
+        showToast('เชื่อมต่อ Firebase ไม่สำเร็จ', 'ระบบจะใช้ข้อมูลในเครื่องนี้ไปก่อน', 'error');
+      }
+    }
+
+    async function loadStateFromFirebase() {
+      const usersSnap = await firestoreApi.getDocs(
+        firestoreApi.collection(firestoreDb, FIREBASE_COLLECTIONS.users)
+      );
+      const reportsSnap = await firestoreApi.getDocs(
+        firestoreApi.collection(firestoreDb, FIREBASE_COLLECTIONS.reports)
+      );
+
+      if (usersSnap.empty) {
+        const base = initialState();
+        await Promise.all(base.users.map(user => setFirebaseDoc(FIREBASE_COLLECTIONS.users, user.id, user)));
+        state.users = base.users;
+      } else {
+        state.users = usersSnap.docs.map(item => item.data());
+      }
+
+      state.reports = reportsSnap.docs.map(item => item.data());
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+
+      if (currentUser) {
+        currentUser = userById(currentUser.id) || currentUser;
+        renderShell();
+        renderCurrentView();
+      }
+    }
+
+    async function setFirebaseDoc(collectionName, id, data) {
+      if (!firebaseReady) return;
+      await firestoreApi.setDoc(
+        firestoreApi.doc(firestoreDb, collectionName, id),
+        JSON.parse(JSON.stringify(data))
+      );
+    }
+
+    async function deleteFirebaseDoc(collectionName, id) {
+      if (!firebaseReady) return;
+      await firestoreApi.deleteDoc(firestoreApi.doc(firestoreDb, collectionName, id));
+    }
+
+    function syncStateToFirebase() {
+      if (!firebaseReady) return;
+      Promise.all([
+        ...state.users.map(user => setFirebaseDoc(FIREBASE_COLLECTIONS.users, user.id, user)),
+        ...state.reports.map(report => setFirebaseDoc(FIREBASE_COLLECTIONS.reports, report.id, report))
+      ]).catch(error => {
+        console.error(error);
+        showToast('ซิงก์ Firebase ไม่สำเร็จ', 'ข้อมูลถูกเก็บสำรองไว้ในเครื่องนี้แล้ว', 'error');
+      });
     }
 
     function getCurrentPeriod() {
@@ -1464,6 +1569,8 @@
       loginScreen.classList.remove('hidden');
       document.getElementById('loginForm').reset();
     });
+
+    initializeFirebase();
 
     function setView(view) {
       activeView = view;
@@ -2000,9 +2107,18 @@
     function deleteUser(id) {
       const user = userById(id);
       if (!confirm(`ต้องการลบผู้ใช้ ${user.name} ใช่ไหม`)) return;
+      const removedReportIds = state.reports
+        .filter(report => report.userId === id)
+        .map(report => report.id);
       state.users = state.users.filter(item => item.id !== id);
       state.reports = state.reports.filter(report => report.userId !== id);
       saveState();
+      if (firebaseReady) {
+        deleteFirebaseDoc(FIREBASE_COLLECTIONS.users, id).catch(console.error);
+        removedReportIds.forEach(reportId => {
+          deleteFirebaseDoc(FIREBASE_COLLECTIONS.reports, reportId).catch(console.error);
+        });
+      }
       renderAdmin();
     }
 
