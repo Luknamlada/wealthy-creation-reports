@@ -1,0 +1,2060 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wealthy Creation Reports</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #1d2733;
+      --muted: #667085;
+      --line: #d9e0ea;
+      --panel: #ffffff;
+      --soft: #f5f7fb;
+      --blue: #1f6feb;
+      --blue-dark: #174ea6;
+      --green: #16865a;
+      --red: #c9342b;
+      --amber: #b7791f;
+      --teal: #087f8c;
+      --shadow: 0 12px 30px rgba(17, 24, 39, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Tahoma, Arial, sans-serif;
+      background: var(--soft);
+      color: var(--ink);
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+      border-radius: 7px;
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .login-screen {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: minmax(320px, 460px) minmax(0, 1fr);
+      background: #eef3f8;
+    }
+
+    .login-panel {
+      display: grid;
+      align-content: center;
+      gap: 24px;
+      padding: 46px;
+      background: #ffffff;
+      box-shadow: var(--shadow);
+      z-index: 1;
+    }
+
+    .brand-mark {
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: #1d2733;
+      color: white;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .login-visual {
+      display: grid;
+      align-content: end;
+      padding: 46px;
+      color: white;
+      background:
+        linear-gradient(145deg, rgba(14, 48, 80, 0.86), rgba(8, 127, 140, 0.76)),
+        url("https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1600&q=80") center/cover;
+    }
+
+    .login-visual h1 {
+      max-width: 760px;
+      margin: 0;
+      font-size: clamp(34px, 5vw, 72px);
+      line-height: 1.05;
+      letter-spacing: 0;
+    }
+
+    .login-visual p {
+      max-width: 600px;
+      margin: 18px 0 0;
+      font-size: 18px;
+      color: rgba(255, 255, 255, 0.86);
+    }
+
+    .form-group {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    label {
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      padding: 11px 12px;
+      background: #ffffff;
+      color: var(--ink);
+      outline: none;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(31, 111, 235, 0.12);
+    }
+
+    textarea {
+      min-height: 128px;
+      resize: vertical;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 40px;
+      padding: 10px 14px;
+      font-weight: 700;
+      color: #ffffff;
+      background: var(--blue);
+    }
+
+    .btn:hover {
+      background: var(--blue-dark);
+    }
+
+    .btn.secondary {
+      color: var(--ink);
+      background: #eef2f7;
+      border: 1px solid var(--line);
+    }
+
+    .btn.secondary:hover {
+      background: #e5ebf3;
+    }
+
+    .btn.danger {
+      background: var(--red);
+    }
+
+    .btn.success {
+      background: var(--green);
+    }
+
+    .demo-note,
+    .muted {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .error {
+      min-height: 22px;
+      color: var(--red);
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .app-shell {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 264px minmax(0, 1fr);
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 22px;
+      padding: 22px;
+      background: #111827;
+      color: #ffffff;
+    }
+
+    .sidebar .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .sidebar .brand strong {
+      display: block;
+      line-height: 1.25;
+    }
+
+    .sidebar .brand span {
+      color: #bac5d3;
+      font-size: 12px;
+    }
+
+    .nav {
+      display: grid;
+      align-content: start;
+      gap: 8px;
+    }
+
+    .nav button {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 10px;
+      padding: 11px 12px;
+      color: #d7deea;
+      background: transparent;
+      text-align: left;
+    }
+
+    .nav button:hover,
+    .nav button.active {
+      background: #273244;
+      color: #ffffff;
+    }
+
+    .user-chip {
+      display: grid;
+      grid-template-columns: 42px minmax(0, 1fr);
+      gap: 10px;
+      align-items: center;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #dbe4ef;
+      color: #1d2733;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      overflow: hidden;
+      flex: 0 0 auto;
+    }
+
+    .avatar.large {
+      width: 92px;
+      height: 92px;
+      font-size: 28px;
+    }
+
+    .content {
+      min-width: 0;
+      padding: 26px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .topbar h1 {
+      margin: 0;
+      font-size: 28px;
+      letter-spacing: 0;
+    }
+
+    .topbar p {
+      margin: 6px 0 0;
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .grid.two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid.three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .panel,
+    .stat,
+    .employee-card,
+    .report-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .panel {
+      padding: 18px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .stat {
+      padding: 18px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .stat strong {
+      font-size: 32px;
+      line-height: 1;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      min-height: 26px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      background: #eef2f7;
+      color: #39475a;
+    }
+
+    .badge.green {
+      background: #e7f6ef;
+      color: var(--green);
+    }
+
+    .badge.red {
+      background: #fdecea;
+      color: var(--red);
+    }
+
+    .badge.amber {
+      background: #fff5dd;
+      color: var(--amber);
+    }
+
+    .badge.teal {
+      background: #e1f5f7;
+      color: var(--teal);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #ffffff;
+    }
+
+    th,
+    td {
+      padding: 12px 10px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    th {
+      color: #526071;
+      font-size: 13px;
+      background: #f8fafc;
+    }
+
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .segmented {
+      display: inline-grid;
+      grid-auto-flow: column;
+      gap: 4px;
+      padding: 4px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #eef2f7;
+    }
+
+    .segmented button {
+      min-width: 104px;
+      padding: 8px 12px;
+      color: #526071;
+      background: transparent;
+      font-weight: 800;
+    }
+
+    .segmented button.active {
+      color: var(--ink);
+      background: #ffffff;
+      box-shadow: 0 2px 8px rgba(17, 24, 39, 0.08);
+    }
+
+    .people-list,
+    .image-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .person-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 9px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #f8fafc;
+      font-size: 13px;
+    }
+
+    .person-pill button {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      color: var(--red);
+      background: #fdecea;
+      font-weight: 800;
+    }
+
+    .preview-img {
+      width: 92px;
+      height: 72px;
+      object-fit: cover;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #eef2f7;
+    }
+
+    .profile-head {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .employee-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 12px;
+    }
+
+    .employee-card {
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .employee-card header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .employee-card strong {
+      display: block;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .report-card {
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .report-card header {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .report-card h3 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .report-card p {
+      margin: 0;
+      color: #39475a;
+      line-height: 1.7;
+      white-space: pre-wrap;
+    }
+
+    .dialog-backdrop {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 18px;
+      background: rgba(17, 24, 39, 0.56);
+      z-index: 20;
+    }
+
+    .dialog {
+      width: min(720px, 100%);
+      max-height: 90vh;
+      overflow: auto;
+      background: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 28px 80px rgba(17, 24, 39, 0.28);
+      padding: 20px;
+    }
+
+    .dialog header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    .dialog h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .empty {
+      padding: 26px;
+      color: var(--muted);
+      text-align: center;
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      background: #fbfcfe;
+    }
+
+    @media (max-width: 920px) {
+      .login-screen,
+      .app-shell,
+      .grid.two,
+      .grid.three {
+        grid-template-columns: 1fr;
+      }
+
+      .login-visual {
+        min-height: 320px;
+        order: -1;
+      }
+
+      .sidebar {
+        position: static;
+        height: auto;
+      }
+
+      .nav {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .content {
+        padding: 18px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .login-panel,
+      .login-visual {
+        padding: 24px;
+      }
+
+      .topbar,
+      .section-title,
+      .profile-head {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .nav,
+      .segmented {
+        grid-template-columns: 1fr;
+        grid-auto-flow: row;
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+
+      .actions .btn,
+      .topbar .btn {
+        width: 100%;
+      }
+    }
+
+    :root {
+      --ink: #172033;
+      --muted: #64748b;
+      --line: #dbe5f0;
+      --panel: rgba(255, 255, 255, 0.92);
+      --soft: #f7fbff;
+      --blue: #2563eb;
+      --blue-dark: #1d4ed8;
+      --green: #059669;
+      --red: #e11d48;
+      --amber: #d97706;
+      --teal: #0d9488;
+      --shadow: 0 18px 45px rgba(30, 41, 59, 0.08);
+      --shadow-sm: 0 6px 18px rgba(30, 41, 59, 0.06);
+      --ring: 0 0 0 4px rgba(37, 99, 235, 0.14);
+    }
+
+    body {
+      font-family: "Noto Sans Thai", "Sarabun", Tahoma, Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(125, 211, 252, 0.18), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(167, 243, 208, 0.20), transparent 28%),
+        linear-gradient(180deg, #fbfdff 0%, #f0f8ff 100%);
+      line-height: 1.55;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      letter-spacing: 0;
+    }
+
+    .login-screen {
+      background: #f8fbff;
+    }
+
+    .login-panel {
+      gap: 22px;
+      border-right: 1px solid rgba(219, 229, 240, 0.8);
+      box-shadow: 20px 0 60px rgba(15, 23, 42, 0.05);
+    }
+
+    .login-panel h1 {
+      margin: 16px 0 6px;
+      font-size: 30px;
+      line-height: 1.15;
+    }
+
+    .brand-mark {
+      border-radius: 18px;
+      background: linear-gradient(135deg, #2563eb, #0d9488);
+      box-shadow: 0 10px 22px rgba(37, 99, 235, 0.24);
+    }
+
+    .login-visual {
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(145deg, rgba(15, 23, 42, 0.72), rgba(13, 148, 136, 0.68)),
+        url("https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1600&q=80") center/cover;
+    }
+
+    .login-visual::after {
+      content: "";
+      position: absolute;
+      inset: auto 46px 46px auto;
+      width: 180px;
+      height: 180px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 28px;
+      transform: rotate(12deg);
+    }
+
+    .login-visual h1,
+    .login-visual p {
+      position: relative;
+      z-index: 1;
+    }
+
+    label {
+      color: #334155;
+      font-weight: 700;
+    }
+
+    input,
+    select,
+    textarea {
+      min-height: 44px;
+      border-color: #dbe5f0;
+      border-radius: 16px;
+      background: #ffffff;
+      box-shadow: var(--shadow-sm);
+      transition: border-color 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+    }
+
+    input:hover,
+    select:hover,
+    textarea:hover {
+      border-color: #b8c7d9;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--blue);
+      box-shadow: var(--ring);
+    }
+
+    input[readonly] {
+      color: #64748b;
+      background: #f8fafc;
+    }
+
+    .btn {
+      min-height: 42px;
+      padding: 10px 16px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      background: #2563eb;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08), 0 8px 18px rgba(37, 99, 235, 0.16);
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 1.2;
+      transition: transform 0.16s ease, background 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+    }
+
+    .btn:hover {
+      background: #1d4ed8;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.10), 0 10px 22px rgba(37, 99, 235, 0.20);
+      transform: translateY(-1px);
+    }
+
+    .btn:focus-visible,
+    .nav button:focus-visible,
+    .segmented button:focus-visible {
+      outline: none;
+      box-shadow: var(--ring);
+    }
+
+    .btn.secondary {
+      color: #334155;
+      background: #ffffff;
+      border-color: #dbe5f0;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn.secondary:hover {
+      color: #172033;
+      background: #f8fafc;
+      border-color: #b8c7d9;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+    }
+
+    .btn.success {
+      background: #059669;
+      box-shadow: 0 8px 18px rgba(5, 150, 105, 0.16);
+    }
+
+    .btn.success:hover {
+      background: #047857;
+    }
+
+    .btn.danger {
+      background: #e11d48;
+      box-shadow: 0 8px 18px rgba(225, 29, 72, 0.16);
+    }
+
+    .btn.danger:hover {
+      background: #be123c;
+    }
+
+    .demo-note {
+      padding: 12px 14px;
+      border: 1px solid #bfdbfe;
+      border-radius: 18px;
+      background: #eff6ff;
+      color: #1e40af;
+      font-weight: 600;
+    }
+
+    .error {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+      color: #be123c;
+    }
+
+    .app-shell {
+      grid-template-columns: 280px minmax(0, 1fr);
+    }
+
+    .sidebar {
+      background: linear-gradient(180deg, #0f172a, #182235 58%, #102a43);
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 18px 0 48px rgba(15, 23, 42, 0.10);
+    }
+
+    .sidebar .brand {
+      padding-bottom: 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+    }
+
+    .nav {
+      gap: 7px;
+    }
+
+    .nav button {
+      min-height: 42px;
+      border: 1px solid transparent;
+      border-radius: 16px;
+      color: #cbd5e1;
+      font-weight: 700;
+    }
+
+    .nav button:hover,
+    .nav button.active {
+      background: rgba(255, 255, 255, 0.10);
+      border-color: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+    }
+
+    .user-chip {
+      padding: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .content {
+      padding: 28px;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      margin: -28px -28px 22px;
+      padding: 22px 28px;
+      border-bottom: 1px solid rgba(219, 229, 240, 0.82);
+      background: rgba(248, 251, 255, 0.78);
+      backdrop-filter: blur(14px);
+    }
+
+    .topbar h1 {
+      color: #0f172a;
+      font-size: 30px;
+      font-weight: 800;
+    }
+
+    .topbar p {
+      max-width: 760px;
+    }
+
+    .grid {
+      gap: 18px;
+    }
+
+    .panel,
+    .stat,
+    .employee-card,
+    .report-card {
+      border-color: rgba(219, 229, 240, 0.9);
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.86);
+      box-shadow: var(--shadow);
+    }
+
+    .panel {
+      padding: 22px;
+    }
+
+    .section-title {
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(219, 229, 240, 0.76);
+    }
+
+    .section-title h2 {
+      color: #0f172a;
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .stat {
+      position: relative;
+      overflow: hidden;
+      min-height: 124px;
+      padding: 20px;
+    }
+
+    .stat::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 5px;
+      background: linear-gradient(180deg, #2563eb, #0d9488);
+    }
+
+    .stat span {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .stat strong {
+      color: #0f172a;
+      font-size: 28px;
+      font-weight: 800;
+    }
+
+    .badge {
+      min-height: 28px;
+      border-radius: 999px;
+      font-weight: 800;
+    }
+
+    .badge.green {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .badge.red {
+      background: #ffe4e6;
+      color: #be123c;
+    }
+
+    .badge.amber {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .badge.teal {
+      background: #ccfbf1;
+      color: #0f766e;
+    }
+
+    .table-wrap {
+      border-color: #dbe5f0;
+      background: #ffffff;
+      box-shadow: var(--shadow-sm);
+      border-radius: 18px;
+    }
+
+    th {
+      color: #475569;
+      background: #f8fafc;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    td {
+      color: #334155;
+    }
+
+    tbody tr:hover {
+      background: #f8fafc;
+    }
+
+    .segmented {
+      border-radius: 18px;
+      background: #eaf1f9;
+    }
+
+    .segmented button {
+      border-radius: 14px;
+      font-weight: 800;
+    }
+
+    .segmented button.active {
+      color: #0f172a;
+    }
+
+    .person-pill {
+      border-color: #cfe0f2;
+      background: #f8fbff;
+      color: #334155;
+      font-weight: 700;
+    }
+
+    .person-pill button {
+      color: #be123c;
+      background: #ffe4e6;
+    }
+
+    .preview-img {
+      border-radius: 18px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .employee-card,
+    .report-card {
+      transition: transform 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    .employee-card:hover,
+    .report-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 34px rgba(15, 23, 42, 0.10);
+    }
+
+    .dialog-backdrop {
+      background: rgba(15, 23, 42, 0.54);
+      backdrop-filter: blur(4px);
+    }
+
+    .dialog {
+      border: 1px solid rgba(219, 229, 240, 0.92);
+      border-radius: 24px;
+    }
+
+    .empty {
+      border-color: #cfe0f2;
+      background: #f8fbff;
+      color: #64748b;
+      font-weight: 600;
+      border-radius: 22px;
+    }
+
+    .toast-stack {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      z-index: 40;
+      display: grid;
+      gap: 10px;
+      width: min(360px, calc(100vw - 32px));
+    }
+
+    .toast {
+      display: grid;
+      grid-template-columns: 10px minmax(0, 1fr);
+      gap: 12px;
+      align-items: start;
+      padding: 14px;
+      border: 1px solid #dbe5f0;
+      border-radius: 20px;
+      background: #ffffff;
+      box-shadow: 0 18px 42px rgba(15, 23, 42, 0.16);
+      animation: toastIn 0.22s ease both;
+    }
+
+    .toast::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      margin-top: 7px;
+      border-radius: 999px;
+      background: #2563eb;
+    }
+
+    .toast.success::before {
+      background: #059669;
+    }
+
+    .toast.error::before {
+      background: #e11d48;
+    }
+
+    .toast strong {
+      display: block;
+      color: #0f172a;
+      font-size: 14px;
+    }
+
+    .toast span {
+      display: block;
+      margin-top: 2px;
+      color: #64748b;
+      font-size: 13px;
+    }
+
+    @keyframes toastIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 920px) {
+      .topbar {
+        position: static;
+        margin: -18px -18px 18px;
+        padding: 18px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .content {
+        padding: 18px;
+      }
+
+      .topbar h1 {
+        font-size: 24px;
+      }
+
+      .toast-stack {
+        right: 16px;
+        bottom: 16px;
+      }
+    }
+
+    .panel,
+    .stat,
+    .employee-card,
+    .report-card,
+    .table-wrap,
+    .dialog,
+    .empty {
+      border-radius: 24px;
+    }
+
+    input,
+    select,
+    textarea {
+      border-radius: 18px;
+    }
+
+    .btn,
+    .nav button,
+    .segmented,
+    .segmented button,
+    .demo-note,
+    .user-chip,
+    .toast {
+      border-radius: 999px;
+    }
+
+    .demo-note,
+    .user-chip,
+    .toast {
+      border-radius: 22px;
+    }
+
+    .avatar,
+    .avatar.large {
+      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.10);
+    }
+
+    .section-title {
+      border-bottom-color: rgba(219, 229, 240, 0.56);
+    }
+
+    th:first-child {
+      border-top-left-radius: 18px;
+    }
+
+    th:last-child {
+      border-top-right-radius: 18px;
+    }
+  </style>
+</head>
+<body>
+  <section id="loginScreen" class="login-screen">
+    <div class="login-panel">
+      <div>
+        <div class="brand-mark">WC</div>
+        <h1>Wealthy Creation</h1>
+        <p class="muted">ระบบรายงานข้อมูลพนักงานประจำวัน</p>
+      </div>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="employeeCode">รหัสพนักงาน</label>
+          <input id="employeeCode" autocomplete="username" placeholder="เช่น WC001 หรือ ADMIN">
+        </div>
+        <div class="form-group">
+          <label for="password">รหัสผ่าน</label>
+          <input id="password" type="password" autocomplete="current-password" placeholder="รหัสผ่านที่กำหนดไว้">
+        </div>
+        <button class="btn" type="submit">เข้าสู่ระบบ</button>
+        <div id="loginError" class="error"></div>
+      </form>
+
+      <div class="demo-note">
+        บัญชีตัวอย่าง: ผู้บริหารใช้ WC001 / WC001, พนักงานใช้ WC002 / WC002, แอดมินใช้ ADMIN / admin123
+      </div>
+    </div>
+
+    <div class="login-visual">
+      <h1>Daily Staff Report Center</h1>
+      <p>ติดตามรายงานเช้าและเย็น แนบภาพประกอบงาน และตรวจสอบสถานะการส่งรายงานของทีมได้ในที่เดียว</p>
+    </div>
+  </section>
+
+  <section id="appShell" class="app-shell hidden">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">WC</div>
+        <div>
+          <strong>Wealthy Creation</strong>
+          <span>Employee Reports</span>
+        </div>
+      </div>
+
+      <nav id="nav" class="nav"></nav>
+
+      <div class="user-chip">
+        <div id="sidebarAvatar" class="avatar"></div>
+        <div>
+          <strong id="sidebarName"></strong>
+          <div id="sidebarRole" class="muted"></div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="content">
+      <div class="topbar">
+        <div>
+          <h1 id="pageTitle">รายงานวันนี้</h1>
+          <p id="pageSubtitle"></p>
+        </div>
+        <div class="actions">
+          <button id="logoutButton" class="btn secondary" type="button">ออกจากระบบ</button>
+        </div>
+      </div>
+
+      <section id="dashboardView" class="view"></section>
+      <section id="reportView" class="view hidden"></section>
+      <section id="profileView" class="view hidden"></section>
+      <section id="adminView" class="view hidden"></section>
+    </main>
+  </section>
+
+  <div id="dialogRoot"></div>
+  <div id="toastRoot" class="toast-stack" aria-live="polite"></div>
+
+  <script>
+    const STORAGE_KEY = 'wealthyCreationReportSystemV1';
+    const todayKey = () => new Date().toISOString().slice(0, 10);
+
+    const roles = {
+      employee: 'พนักงาน',
+      executive: 'ผู้บริหาร',
+      admin: 'แอดมิน'
+    };
+
+    const seedEmployees = [
+      ['WC001', 'กิตติพงศ์ วัฒนากุล', 'ประธานฝ่ายปฏิบัติการ', 'executive'],
+      ['WC002', 'พิมพ์ชนก ศรีวัฒนา', 'ผู้จัดการฝ่ายขาย', 'employee'],
+      ['WC003', 'ณัฐวุฒิ ใจดี', 'เจ้าหน้าที่บัญชี', 'employee'],
+      ['WC004', 'อรทัย แสงทอง', 'เจ้าหน้าที่บุคคล', 'employee'],
+      ['WC005', 'ธนากร พรหมมินทร์', 'นักการตลาดดิจิทัล', 'employee'],
+      ['WC006', 'สุชาดา เกษมสุข', 'หัวหน้าทีมบริการลูกค้า', 'employee'],
+      ['WC007', 'ปกรณ์ ตั้งเจริญ', 'เจ้าหน้าที่คลังสินค้า', 'employee'],
+      ['WC008', 'วิภาดา วงศ์ไพบูลย์', 'เจ้าหน้าที่ประสานงาน', 'employee'],
+      ['WC009', 'ชยพล ธรรมรักษ์', 'นักวิเคราะห์ข้อมูล', 'employee'],
+      ['WC010', 'เมธาวี ศิริชัย', 'นักออกแบบกราฟิก', 'employee'],
+      ['WC011', 'ภาคิน สุขสำราญ', 'เจ้าหน้าที่ IT Support', 'employee'],
+      ['WC012', 'จิราพร นิลกุล', 'ผู้ช่วยผู้จัดการ', 'employee'],
+      ['WC013', 'รัตนพล หอมจันทร์', 'พนักงานขาย', 'employee'],
+      ['WC014', 'สุธาสินี พงษ์ศักดิ์', 'พนักงานขาย', 'employee'],
+      ['WC015', 'ธีรภัทร มั่นคง', 'เจ้าหน้าที่จัดซื้อ', 'employee'],
+      ['WC016', 'เกวลิน จันทร์เพ็ญ', 'เจ้าหน้าที่การเงิน', 'employee'],
+      ['WC017', 'อนุชา รุ่งโรจน์', 'ช่างเทคนิค', 'employee'],
+      ['WC018', 'นิภาพร ทองดี', 'เจ้าหน้าที่เอกสาร', 'employee'],
+      ['WC019', 'กานต์ธีรา ศรีสุข', 'คอนเทนต์ครีเอเตอร์', 'employee'],
+      ['WC020', 'วรพล พัฒนกิจ', 'หัวหน้าทีมคลังสินค้า', 'employee'],
+      ['WC021', 'มณีรัตน์ แก้วมณี', 'พนักงานต้อนรับ', 'employee'],
+      ['WC022', 'อัครเดช ภูมิใจ', 'พนักงานขนส่ง', 'employee'],
+      ['WC023', 'พรทิพย์ บุญช่วย', 'พนักงานขายออนไลน์', 'employee'],
+      ['WC024', 'ศุภชัย พรเจริญ', 'หัวหน้าทีมขาย', 'employee'],
+      ['WC025', 'นันทิชา เลิศล้ำ', 'เจ้าหน้าที่ CRM', 'employee'],
+      ['WC026', 'ไตรภพ สายทอง', 'เจ้าหน้าที่ตรวจสอบคุณภาพ', 'employee'],
+      ['WC027', 'ศิริพร ชูใจ', 'พนักงานบัญชี', 'employee'],
+      ['WC028', 'ณิชาภัทร วงษ์ดี', 'เจ้าหน้าที่ฝึกอบรม', 'employee'],
+      ['WC029', 'ชาญณรงค์ พรมดี', 'ช่างภาพสินค้า', 'employee'],
+      ['WC030', 'วรรณวิสา ธนทรัพย์', 'เลขานุการผู้บริหาร', 'employee'],
+      ['WC031', 'ปิยวัฒน์ สกุลชัย', 'ผู้จัดการสาขา', 'employee'],
+      ['WC032', 'รุ่งนภา อ่อนแก้ว', 'เจ้าหน้าที่ประกันคุณภาพ', 'employee'],
+      ['WC033', 'ภัทรพล แก้วคำ', 'พนักงานแพ็กสินค้า', 'employee'],
+      ['WC034', 'ดารินทร์ ชัยมงคล', 'เจ้าหน้าที่ลูกค้าสัมพันธ์', 'employee'],
+      ['WC035', 'กฤษฎา อินทรประสิทธิ์', 'นักวางแผนสื่อ', 'employee'],
+      ['WC036', 'อุมาพร วิเศษศิลป์', 'พนักงานขายหน้าร้าน', 'employee'],
+      ['WC037', 'ศรัณย์ ตั้งมั่น', 'เจ้าหน้าที่ระบบ', 'employee'],
+      ['WC038', 'เบญจมาศ กิตติกุล', 'ผู้ช่วยบัญชี', 'employee'],
+      ['WC039', 'ชลธิชา ปัญญาดี', 'เจ้าหน้าที่จัดส่ง', 'employee'],
+      ['WC040', 'วรากร เจริญผล', 'พนักงานคลังสินค้า', 'employee']
+    ];
+
+    const initialState = () => ({
+      users: [
+        {
+          id: 'ADMIN',
+          code: 'ADMIN',
+          password: 'admin123',
+          name: 'System Administrator',
+          position: 'แอดมินระบบ',
+          phone: '02-000-0000',
+          role: 'admin',
+          photo: ''
+        },
+        ...seedEmployees.map(([code, name, position, role]) => ({
+          id: code,
+          code,
+          password: code,
+          name,
+          position,
+          phone: '',
+          role,
+          photo: ''
+        }))
+      ],
+      reports: []
+    });
+
+    let state = loadState();
+    let currentUser = null;
+    let activeView = 'dashboard';
+    let selectedPeriod = getCurrentPeriod();
+    let reportImages = [];
+    let collaborators = [];
+
+    const loginScreen = document.getElementById('loginScreen');
+    const appShell = document.getElementById('appShell');
+    const nav = document.getElementById('nav');
+    const pageTitle = document.getElementById('pageTitle');
+    const pageSubtitle = document.getElementById('pageSubtitle');
+    const views = {
+      dashboard: document.getElementById('dashboardView'),
+      report: document.getElementById('reportView'),
+      profile: document.getElementById('profileView'),
+      admin: document.getElementById('adminView')
+    };
+
+    function loadState() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (!saved) {
+        return initialState();
+      }
+
+      try {
+        const parsed = JSON.parse(saved);
+        const base = initialState();
+        return {
+          users: parsed.users?.length ? parsed.users : base.users,
+          reports: parsed.reports || []
+        };
+      } catch {
+        return initialState();
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function getCurrentPeriod() {
+      const hour = new Date().getHours();
+      if (hour >= 5 && hour < 12) return 'morning';
+      if (hour >= 15) return 'evening';
+      return 'morning';
+    }
+
+    function periodLabel(period) {
+      return period === 'morning' ? 'เช้า (05:00-11:00)' : 'เย็น (15:00-23:59)';
+    }
+
+    function isManager(user = currentUser) {
+      return user && (user.role === 'admin' || user.role === 'executive');
+    }
+
+    function employeeUsers() {
+      return state.users.filter(user => user.role !== 'admin');
+    }
+
+    function userById(id) {
+      return state.users.find(user => user.id === id);
+    }
+
+    function initials(name) {
+      return name.split(' ').map(part => part[0]).join('').slice(0, 2).toUpperCase();
+    }
+
+    function avatarHtml(user, size = '') {
+      if (user.photo) {
+        return `<img class="avatar ${size}" src="${user.photo}" alt="${user.name}">`;
+      }
+      return `<div class="avatar ${size}">${initials(user.name)}</div>`;
+    }
+
+    function escapeHtml(value) {
+      return String(value || '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    function formatDateTime(value) {
+      return new Intl.DateTimeFormat('th-TH', {
+        dateStyle: 'medium',
+        timeStyle: 'short'
+      }).format(new Date(value));
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', event => {
+      event.preventDefault();
+      const code = document.getElementById('employeeCode').value.trim().toUpperCase();
+      const password = document.getElementById('password').value;
+      const user = state.users.find(item => item.code.toUpperCase() === code && item.password === password);
+
+      if (!user) {
+        document.getElementById('loginError').textContent = 'รหัสพนักงานหรือรหัสผ่านไม่ถูกต้อง';
+        return;
+      }
+
+      currentUser = user;
+      document.getElementById('loginError').textContent = '';
+      loginScreen.classList.add('hidden');
+      appShell.classList.remove('hidden');
+      setView('dashboard');
+    });
+
+    document.getElementById('logoutButton').addEventListener('click', () => {
+      currentUser = null;
+      appShell.classList.add('hidden');
+      loginScreen.classList.remove('hidden');
+      document.getElementById('loginForm').reset();
+    });
+
+    function setView(view) {
+      activeView = view;
+      Object.entries(views).forEach(([name, element]) => element.classList.toggle('hidden', name !== view));
+      renderShell();
+      renderCurrentView();
+    }
+
+    function renderShell() {
+      document.getElementById('sidebarAvatar').innerHTML = currentUser.photo
+        ? `<img class="avatar" src="${currentUser.photo}" alt="${currentUser.name}">`
+        : initials(currentUser.name);
+      document.getElementById('sidebarName').textContent = currentUser.name;
+      document.getElementById('sidebarRole').textContent = roles[currentUser.role];
+
+      const items = [
+        ['dashboard', 'รายงานวันนี้'],
+        ['report', 'เขียนรายงาน'],
+        ['profile', 'โปรไฟล์']
+      ];
+
+      if (currentUser.role === 'admin') {
+        items.push(['admin', 'จัดการระบบ']);
+      }
+
+      nav.innerHTML = items.map(([view, label]) => `
+        <button type="button" class="${activeView === view ? 'active' : ''}" data-view="${view}">${label}</button>
+      `).join('');
+
+      nav.querySelectorAll('button').forEach(button => {
+        button.addEventListener('click', () => setView(button.dataset.view));
+      });
+    }
+
+    function renderCurrentView() {
+      const subtitles = {
+        dashboard: isManager() ? 'ตรวจสอบสถานะการส่งรายงานของพนักงานทั้งหมด' : 'ดูสถานะรายงานและประวัติของคุณ',
+        report: 'ส่งรายงานงานช่วงเช้าหรือช่วงเย็น พร้อมรูปภาพและผู้ร่วมงาน',
+        profile: 'จัดการรูปภาพ เบอร์โทร และตำแหน่งงาน',
+        admin: 'เพิ่ม ลบ และแก้ไขข้อมูลผู้ใช้'
+      };
+
+      pageTitle.textContent = {
+        dashboard: 'รายงานวันนี้',
+        report: 'เขียนรายงาน',
+        profile: 'โปรไฟล์',
+        admin: 'จัดการระบบ'
+      }[activeView];
+      pageSubtitle.textContent = subtitles[activeView];
+
+      if (activeView === 'dashboard') renderDashboard();
+      if (activeView === 'report') renderReportForm();
+      if (activeView === 'profile') renderProfile();
+      if (activeView === 'admin') renderAdmin();
+    }
+
+    function reportsFor(date = todayKey()) {
+      return state.reports.filter(report => report.date === date);
+    }
+
+    function hasReport(userId, period) {
+      return reportsFor().some(report => report.userId === userId && report.period === period);
+    }
+
+    function reportByUserPeriod(userId, period) {
+      return reportsFor().find(report => report.userId === userId && report.period === period);
+    }
+
+    function renderDashboard() {
+      const todayReports = reportsFor();
+      const employees = employeeUsers();
+      const morningSent = employees.filter(user => hasReport(user.id, 'morning')).length;
+      const eveningSent = employees.filter(user => hasReport(user.id, 'evening')).length;
+
+      if (!isManager()) {
+        const myReports = todayReports.filter(report => report.userId === currentUser.id);
+        views.dashboard.innerHTML = `
+          <div class="grid three">
+            <div class="stat"><span>รายงานเช้า</span><strong>${hasReport(currentUser.id, 'morning') ? 'ส่งแล้ว' : 'ยังไม่ส่ง'}</strong></div>
+            <div class="stat"><span>รายงานเย็น</span><strong>${hasReport(currentUser.id, 'evening') ? 'ส่งแล้ว' : 'ยังไม่ส่ง'}</strong></div>
+            <div class="stat"><span>รายงานวันนี้</span><strong>${myReports.length}</strong></div>
+          </div>
+          <div class="panel" style="margin-top:16px">
+            <div class="section-title">
+              <h2>รายงานของฉันวันนี้</h2>
+              <button class="btn" type="button" onclick="setView('report')">เขียนรายงาน</button>
+            </div>
+            ${renderReportList(myReports)}
+          </div>
+        `;
+        return;
+      }
+
+      views.dashboard.innerHTML = `
+        <div class="grid three">
+          <div class="stat"><span>พนักงานทั้งหมด</span><strong>${employees.length}</strong></div>
+          <div class="stat"><span>ส่งรายงานเช้า</span><strong>${morningSent}/${employees.length}</strong></div>
+          <div class="stat"><span>ส่งรายงานเย็น</span><strong>${eveningSent}/${employees.length}</strong></div>
+        </div>
+
+        <div class="panel" style="margin-top:16px">
+          <div class="section-title">
+            <h2>การแจ้งเตือนรายงานประจำวันที่ ${todayKey()}</h2>
+            <div class="segmented">
+              <button type="button" class="${selectedPeriod === 'morning' ? 'active' : ''}" data-period="morning">เช้า</button>
+              <button type="button" class="${selectedPeriod === 'evening' ? 'active' : ''}" data-period="evening">เย็น</button>
+            </div>
+          </div>
+          ${renderStatusTable(employees, selectedPeriod)}
+        </div>
+
+        <div class="panel" style="margin-top:16px">
+          <div class="section-title">
+            <h2>รายงานล่าสุด</h2>
+          </div>
+          ${renderReportList([...todayReports].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 8))}
+        </div>
+      `;
+
+      views.dashboard.querySelectorAll('[data-period]').forEach(button => {
+        button.addEventListener('click', () => {
+          selectedPeriod = button.dataset.period;
+          renderDashboard();
+        });
+      });
+    }
+
+    function renderStatusTable(employees, period) {
+      return `
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>พนักงาน</th>
+                <th>ตำแหน่ง</th>
+                <th>ช่วงเวลา</th>
+                <th>สถานะ</th>
+                <th>ดูรายงาน</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${employees.map(user => {
+                const report = reportByUserPeriod(user.id, period);
+                return `
+                  <tr>
+                    <td>
+                      <div style="display:flex;align-items:center;gap:10px">
+                        ${avatarHtml(user)}
+                        <div><strong>${escapeHtml(user.name)}</strong><div class="muted">${user.code}</div></div>
+                      </div>
+                    </td>
+                    <td>${escapeHtml(user.position)}</td>
+                    <td>${periodLabel(period)}</td>
+                    <td>${report ? '<span class="badge green">ส่งแล้ว</span>' : '<span class="badge red">ยังไม่ส่ง</span>'}</td>
+                    <td>${report ? `<button class="btn secondary" type="button" onclick="openReport('${report.id}')">เปิดดู</button>` : '-'}</td>
+                  </tr>
+                `;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function renderReportList(reports) {
+      if (!reports.length) {
+        return '<div class="empty">ยังไม่มีรายงานในวันนี้</div>';
+      }
+
+      return `<div class="grid two">${reports.map(report => {
+        const user = userById(report.userId);
+        const collaboratorNames = report.collaborators.map(id => userById(id)?.name).filter(Boolean);
+        return `
+          <article class="report-card">
+            <header>
+              <div>
+                <h3>${escapeHtml(report.title)}</h3>
+                <div class="muted">${escapeHtml(user?.name || 'ไม่พบผู้ใช้')} · ${periodLabel(report.period)}</div>
+              </div>
+              <span class="badge teal">${formatDateTime(report.createdAt)}</span>
+            </header>
+            <p>${escapeHtml(report.detail).slice(0, 220)}${report.detail.length > 220 ? '...' : ''}</p>
+            ${collaboratorNames.length ? `<div class="people-list">${collaboratorNames.map(name => `<span class="person-pill">${escapeHtml(name)}</span>`).join('')}</div>` : ''}
+            ${report.images.length ? `<div class="image-list">${report.images.slice(0, 3).map(src => `<img class="preview-img" src="${src}" alt="ภาพรายงาน">`).join('')}</div>` : ''}
+            <button class="btn secondary" type="button" onclick="openReport('${report.id}')">ดูรายละเอียด</button>
+          </article>
+        `;
+      }).join('')}</div>`;
+    }
+
+    function renderReportForm() {
+      reportImages = [];
+      collaborators = [];
+      const peopleOptions = employeeUsers()
+        .filter(user => user.id !== currentUser.id)
+        .map(user => `<option value="${user.id}">${user.code} - ${user.name}</option>`)
+        .join('');
+
+      views.report.innerHTML = `
+        <div class="panel">
+          <div class="section-title">
+            <h2>รายงานข้อมูล</h2>
+            <span class="badge amber">วันนี้ ${todayKey()}</span>
+          </div>
+          <form id="reportForm">
+            <div class="grid two">
+              <div class="form-group">
+                <label for="reportPeriod">ช่วงเวลารายงาน</label>
+                <select id="reportPeriod" required>
+                  <option value="morning" ${selectedPeriod === 'morning' ? 'selected' : ''}>เช้า (05:00-11:00)</option>
+                  <option value="evening" ${selectedPeriod === 'evening' ? 'selected' : ''}>เย็น (15:00-23:59)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="reportTitle">หัวข้องาน</label>
+                <input id="reportTitle" required placeholder="เช่น สรุปงานขายประจำวัน">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="reportDetail">รายละเอียดรายงาน</label>
+              <textarea id="reportDetail" required placeholder="ระบุงานที่ทำ ปัญหาที่พบ และผลลัพธ์"></textarea>
+            </div>
+
+            <div class="grid two">
+              <div class="form-group">
+                <label for="collaboratorSelect">เพิ่มบุคคลที่เกี่ยวกับงาน</label>
+                <div class="actions">
+                  <select id="collaboratorSelect">
+                    <option value="">เลือกพนักงาน</option>
+                    ${peopleOptions}
+                  </select>
+                  <button id="addCollaborator" class="btn secondary" type="button">เพิ่ม</button>
+                </div>
+                <div id="collaboratorList" class="people-list"></div>
+              </div>
+
+              <div class="form-group">
+                <label for="reportImages">แนบภาพรายงาน</label>
+                <input id="reportImages" type="file" accept="image/*" multiple>
+                <div id="imagePreview" class="image-list"></div>
+              </div>
+            </div>
+
+            <div class="actions">
+              <button class="btn success" type="submit">ส่งรายงาน</button>
+              <button class="btn secondary" type="reset">ล้างข้อมูล</button>
+            </div>
+          </form>
+        </div>
+      `;
+
+      document.getElementById('addCollaborator').addEventListener('click', addCollaborator);
+      document.getElementById('reportImages').addEventListener('change', handleReportImages);
+      document.getElementById('reportForm').addEventListener('submit', submitReport);
+      document.getElementById('reportForm').addEventListener('reset', () => {
+        reportImages = [];
+        collaborators = [];
+        setTimeout(() => {
+          renderCollaborators();
+          renderImagePreview();
+        }, 0);
+      });
+    }
+
+    function addCollaborator() {
+      const select = document.getElementById('collaboratorSelect');
+      const id = select.value;
+      if (!id || collaborators.includes(id)) return;
+      collaborators.push(id);
+      select.value = '';
+      renderCollaborators();
+    }
+
+    function renderCollaborators() {
+      const holder = document.getElementById('collaboratorList');
+      if (!holder) return;
+      holder.innerHTML = collaborators.map(id => {
+        const user = userById(id);
+        return `
+          <span class="person-pill">
+            ${escapeHtml(user?.name || id)}
+            <button type="button" onclick="removeCollaborator('${id}')">x</button>
+          </span>
+        `;
+      }).join('');
+    }
+
+    function removeCollaborator(id) {
+      collaborators = collaborators.filter(item => item !== id);
+      renderCollaborators();
+    }
+
+    async function handleReportImages(event) {
+      const files = [...event.target.files].slice(0, 6);
+      reportImages = await Promise.all(files.map(fileToDataUrl));
+      renderImagePreview();
+    }
+
+    function renderImagePreview() {
+      const holder = document.getElementById('imagePreview');
+      if (!holder) return;
+      holder.innerHTML = reportImages.map(src => `<img class="preview-img" src="${src}" alt="ภาพแนบ">`).join('');
+    }
+
+    function fileToDataUrl(file) {
+      return new Promise(resolve => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function submitReport(event) {
+      event.preventDefault();
+      const period = document.getElementById('reportPeriod').value;
+      const existingIndex = state.reports.findIndex(report =>
+        report.userId === currentUser.id && report.date === todayKey() && report.period === period
+      );
+      const report = {
+        id: existingIndex >= 0 ? state.reports[existingIndex].id : `R${Date.now()}`,
+        userId: currentUser.id,
+        date: todayKey(),
+        period,
+        title: document.getElementById('reportTitle').value.trim(),
+        detail: document.getElementById('reportDetail').value.trim(),
+        collaborators: [...collaborators],
+        images: [...reportImages],
+        createdAt: new Date().toISOString()
+      };
+
+      if (existingIndex >= 0) {
+        state.reports[existingIndex] = report;
+      } else {
+        state.reports.push(report);
+      }
+
+      saveState();
+      selectedPeriod = period;
+      showToast('ส่งรายงานเรียบร้อยแล้ว', 'รายงานถูกบันทึกและส่งไปยังหน้าผู้บริหารแล้ว', 'success');
+      setView('dashboard');
+    }
+
+    function renderProfile() {
+      views.profile.innerHTML = `
+        <div class="panel">
+          <div class="profile-head">
+            ${avatarHtml(currentUser, 'large')}
+            <div>
+              <h2 style="margin:0">${escapeHtml(currentUser.name)}</h2>
+              <p class="muted" style="margin:6px 0 0">${currentUser.code} · ${roles[currentUser.role]}</p>
+            </div>
+          </div>
+
+          <form id="profileForm">
+            <div class="grid two">
+              <div class="form-group">
+                <label for="profileName">ชื่อพนักงาน</label>
+                <input id="profileName" value="${escapeHtml(currentUser.name)}" ${currentUser.role !== 'admin' ? 'readonly' : ''}>
+              </div>
+              <div class="form-group">
+                <label for="profilePosition">ตำแหน่งงาน</label>
+                <input id="profilePosition" value="${escapeHtml(currentUser.position)}">
+              </div>
+              <div class="form-group">
+                <label for="profilePhone">เบอร์โทรติดต่อ</label>
+                <input id="profilePhone" value="${escapeHtml(currentUser.phone)}" placeholder="เช่น 081-234-5678">
+              </div>
+              <div class="form-group">
+                <label for="profilePhoto">รูปโปรไฟล์</label>
+                <input id="profilePhoto" type="file" accept="image/*">
+              </div>
+            </div>
+            <div class="actions">
+              <button class="btn success" type="submit">บันทึกโปรไฟล์</button>
+            </div>
+          </form>
+        </div>
+      `;
+
+      document.getElementById('profileForm').addEventListener('submit', saveProfile);
+    }
+
+    async function saveProfile(event) {
+      event.preventDefault();
+      const file = document.getElementById('profilePhoto').files[0];
+      const index = state.users.findIndex(user => user.id === currentUser.id);
+      const updated = {
+        ...currentUser,
+        name: document.getElementById('profileName').value.trim(),
+        position: document.getElementById('profilePosition').value.trim(),
+        phone: document.getElementById('profilePhone').value.trim()
+      };
+
+      if (file) {
+        updated.photo = await fileToDataUrl(file);
+      }
+
+      state.users[index] = updated;
+      currentUser = updated;
+      saveState();
+      showToast('บันทึกโปรไฟล์เรียบร้อยแล้ว', 'ข้อมูลโปรไฟล์ของคุณอัปเดตแล้ว', 'success');
+      setView('profile');
+    }
+
+    function renderAdmin() {
+      if (currentUser.role !== 'admin') {
+        views.admin.innerHTML = '<div class="empty">หน้านี้สำหรับแอดมินเท่านั้น</div>';
+        return;
+      }
+
+      views.admin.innerHTML = `
+        <div class="panel">
+          <div class="section-title">
+            <h2>ผู้ใช้ทั้งหมด</h2>
+            <button class="btn" type="button" onclick="openUserDialog()">เพิ่มผู้ใช้</button>
+          </div>
+          <div class="employee-grid">
+            ${state.users.map(user => `
+              <article class="employee-card">
+                <header>
+                  ${avatarHtml(user)}
+                  <div>
+                    <strong>${escapeHtml(user.name)}</strong>
+                    <span class="muted">${user.code} · ${roles[user.role]}</span>
+                  </div>
+                </header>
+                <div class="muted">${escapeHtml(user.position || '-')}</div>
+                <div class="muted">${escapeHtml(user.phone || 'ยังไม่มีเบอร์โทร')}</div>
+                <div class="actions">
+                  <button class="btn secondary" type="button" onclick="openUserDialog('${user.id}')">แก้ไข</button>
+                  ${user.id !== currentUser.id ? `<button class="btn danger" type="button" onclick="deleteUser('${user.id}')">ลบ</button>` : ''}
+                </div>
+              </article>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function openUserDialog(id = '') {
+      const user = id ? userById(id) : {
+        id: '',
+        code: '',
+        password: '',
+        name: '',
+        position: '',
+        phone: '',
+        role: 'employee',
+        photo: ''
+      };
+
+      document.getElementById('dialogRoot').innerHTML = `
+        <div class="dialog-backdrop">
+          <form id="userForm" class="dialog">
+            <header>
+              <h2>${id ? 'แก้ไขผู้ใช้' : 'เพิ่มผู้ใช้'}</h2>
+              <button class="btn secondary" type="button" onclick="closeDialog()">ปิด</button>
+            </header>
+            <div class="grid two">
+              <div class="form-group">
+                <label for="userCode">รหัสพนักงาน</label>
+                <input id="userCode" value="${escapeHtml(user.code)}" ${id ? 'readonly' : ''} required>
+              </div>
+              <div class="form-group">
+                <label for="userPassword">รหัสผ่าน</label>
+                <input id="userPassword" value="${escapeHtml(user.password)}" required>
+              </div>
+              <div class="form-group">
+                <label for="userName">ชื่อ</label>
+                <input id="userName" value="${escapeHtml(user.name)}" required>
+              </div>
+              <div class="form-group">
+                <label for="userRole">สิทธิ์</label>
+                <select id="userRole">
+                  <option value="employee" ${user.role === 'employee' ? 'selected' : ''}>พนักงาน</option>
+                  <option value="executive" ${user.role === 'executive' ? 'selected' : ''}>ผู้บริหาร</option>
+                  <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>แอดมิน</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="userPosition">ตำแหน่ง</label>
+                <input id="userPosition" value="${escapeHtml(user.position)}">
+              </div>
+              <div class="form-group">
+                <label for="userPhone">เบอร์โทร</label>
+                <input id="userPhone" value="${escapeHtml(user.phone)}">
+              </div>
+            </div>
+            <div class="actions">
+              <button class="btn success" type="submit">บันทึก</button>
+            </div>
+          </form>
+        </div>
+      `;
+
+      document.getElementById('userForm').addEventListener('submit', event => {
+        event.preventDefault();
+        saveUser(id);
+      });
+    }
+
+    function saveUser(id) {
+      const code = document.getElementById('userCode').value.trim().toUpperCase();
+      const nextUser = {
+        id: id || code,
+        code,
+        password: document.getElementById('userPassword').value,
+        name: document.getElementById('userName').value.trim(),
+        position: document.getElementById('userPosition').value.trim(),
+        phone: document.getElementById('userPhone').value.trim(),
+        role: document.getElementById('userRole').value,
+        photo: id ? userById(id).photo : ''
+      };
+
+      if (!id && state.users.some(user => user.code.toUpperCase() === code)) {
+        showToast('รหัสพนักงานนี้มีอยู่แล้ว', 'กรุณาใช้รหัสพนักงานอื่น', 'error');
+        return;
+      }
+
+      if (id) {
+        state.users = state.users.map(user => user.id === id ? nextUser : user);
+        if (currentUser.id === id) currentUser = nextUser;
+      } else {
+        state.users.push(nextUser);
+      }
+
+      saveState();
+      closeDialog();
+      renderAdmin();
+      renderShell();
+    }
+
+    function deleteUser(id) {
+      const user = userById(id);
+      if (!confirm(`ต้องการลบผู้ใช้ ${user.name} ใช่ไหม`)) return;
+      state.users = state.users.filter(item => item.id !== id);
+      state.reports = state.reports.filter(report => report.userId !== id);
+      saveState();
+      renderAdmin();
+    }
+
+    function closeDialog() {
+      document.getElementById('dialogRoot').innerHTML = '';
+    }
+
+    function showToast(title, message = '', type = 'info') {
+      const root = document.getElementById('toastRoot');
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.innerHTML = `
+        <div>
+          <strong>${escapeHtml(title)}</strong>
+          ${message ? `<span>${escapeHtml(message)}</span>` : ''}
+        </div>
+      `;
+      root.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(8px)';
+        setTimeout(() => toast.remove(), 180);
+      }, 3200);
+    }
+
+    function openReport(id) {
+      const report = state.reports.find(item => item.id === id);
+      if (!report) return;
+      const user = userById(report.userId);
+      const collaboratorNames = report.collaborators.map(item => userById(item)?.name).filter(Boolean);
+
+      document.getElementById('dialogRoot').innerHTML = `
+        <div class="dialog-backdrop">
+          <article class="dialog">
+            <header>
+              <h2>${escapeHtml(report.title)}</h2>
+              <button class="btn secondary" type="button" onclick="closeDialog()">ปิด</button>
+            </header>
+            <p class="muted">${escapeHtml(user?.name || '')} · ${periodLabel(report.period)} · ${formatDateTime(report.createdAt)}</p>
+            <p style="line-height:1.8;white-space:pre-wrap">${escapeHtml(report.detail)}</p>
+            ${collaboratorNames.length ? `
+              <h3>บุคคลที่เกี่ยวกับงาน</h3>
+              <div class="people-list">${collaboratorNames.map(name => `<span class="person-pill">${escapeHtml(name)}</span>`).join('')}</div>
+            ` : ''}
+            ${report.images.length ? `
+              <h3>ภาพแนบ</h3>
+              <div class="image-list">${report.images.map(src => `<img class="preview-img" src="${src}" alt="ภาพรายงาน">`).join('')}</div>
+            ` : ''}
+          </article>
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>
