@@ -338,7 +338,7 @@ tbody tr:hover { background: #f8fafc; }
   border-radius: 38px;
   background:
     linear-gradient(110deg, rgba(7, 49, 86, 0.34), rgba(20, 116, 186, 0.12)),
-    url("../images/login-bg.jpg.png") center/cover no-repeat;
+    url("../images/login-bg.jpg.png") 58% center/cover no-repeat;
   box-shadow: 0 30px 80px rgba(30, 64, 175, 0.16);
 }
 
