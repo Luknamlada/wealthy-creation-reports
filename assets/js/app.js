@@ -13,6 +13,8 @@
 
   const access = {
     employee: ['employee', 'executive', 'admin'],
+    report: ['employee', 'executive', 'admin'],
+    profile: ['employee', 'executive', 'admin'],
     executive: ['executive', 'admin'],
     admin: ['admin']
   };
@@ -98,6 +100,7 @@
             <div class="header-user">
               ${avatar(currentUser)}
               <div class="header-user-copy"><strong>${escapeHtml(currentUser.name)}</strong><span>${WCStore.roles[currentUser.role]} · ${escapeHtml(currentUser.position)}</span></div>
+              <button class="header-profile" data-route="profile.html" type="button">โปรไฟล์</button>
               <button id="logoutButton" class="header-logout" type="button">ออกจากระบบ</button>
             </div>
           </div>
@@ -136,11 +139,10 @@
     if (access.employee.includes(currentUser.role)) {
       items.push(`
         <div class="nav-menu">
-          <button class="nav-trigger ${active === 'employee' ? 'active' : ''}" type="button">พื้นที่พนักงาน</button>
+          <button class="nav-trigger ${active === 'employee' || active === 'report' ? 'active' : ''}" type="button">งานของฉัน</button>
           <div class="nav-dropdown">
-            <button data-route="employee.html" type="button"><strong>ภาพรวมของฉัน</strong><span>สถานะรายงานประจำวัน</span></button>
-            <button data-route="employee.html#reportFormPanel" data-scroll="reportFormPanel" type="button"><strong>เขียนรายงาน</strong><span>รายงานเช้าและเย็น</span></button>
-            <button data-route="employee.html#profilePanel" data-scroll="profilePanel" type="button"><strong>โปรไฟล์ของฉัน</strong><span>แก้ไขข้อมูลติดต่อ</span></button>
+            <button data-route="employee.html" type="button"><strong>หน้าหลักของฉัน</strong><span>สถานะรายงานประจำวัน</span></button>
+            <button data-route="report.html" type="button"><strong>รายงานของฉัน</strong><span>เขียนและดูประวัติรายงาน</span></button>
           </div>
         </div>
       `);
@@ -172,28 +174,40 @@
       `);
     }
 
-    return `<button class="nav-home ${active === page ? 'active' : ''}" data-route="${page}.html" type="button">หน้าหลัก</button>${items.join('')}`;
+    return `<button class="nav-home ${active === 'employee' ? 'active' : ''}" data-route="employee.html" type="button">หน้าหลัก</button>${items.join('')}`;
   }
 
   function renderEmployee() {
     const mine = todayReports().filter(report => report.userId === currentUser.id);
-    shell('พื้นที่พนักงาน', 'เขียนรายงานเช้า/เย็น แนบภาพ และอัปเดตโปรไฟล์ของคุณ', `
+    shell('หน้าหลักของฉัน', 'ดูสถานะรายงานประจำวันและรายการล่าสุดของคุณ', `
       <div class="grid three">
         <div class="stat"><span>รายงานเช้า</span><strong>${hasReport(currentUser.id, 'morning') ? 'ส่งแล้ว' : 'ยังไม่ส่ง'}</strong></div>
         <div class="stat"><span>รายงานเย็น</span><strong>${hasReport(currentUser.id, 'evening') ? 'ส่งแล้ว' : 'ยังไม่ส่ง'}</strong></div>
         <div class="stat"><span>รายงานวันนี้</span><strong>${mine.length}</strong></div>
       </div>
-      <div class="grid two" style="margin-top:18px">
-        ${reportForm()}
-        ${profileForm()}
-      </div>
       <section id="myReportsPanel" class="panel anchor-panel" style="margin-top:18px">
-        <div class="section-head"><h2>รายงานของฉันวันนี้</h2></div>
+        <div class="section-head"><h2>รายงานของฉันวันนี้</h2><button class="btn primary" data-route="report.html" type="button">ไปหน้ารายงาน</button></div>
         ${reportList(mine)}
       </section>
     `, 'employee');
+  }
 
+  function renderReportPage() {
+    const mine = todayReports().filter(report => report.userId === currentUser.id);
+    shell('รายงานของฉัน', 'เขียนรายงานช่วงเช้าหรือช่วงเย็น และดูรายงานที่ส่งแล้ว', `
+      ${reportForm()}
+      <section class="panel anchor-panel" style="margin-top:18px">
+        <div class="section-head"><h2>รายงานที่ส่งวันนี้</h2></div>
+        ${reportList(mine)}
+      </section>
+    `, 'report');
     bindReportForm();
+  }
+
+  function renderProfilePage() {
+    shell('โปรไฟล์ของฉัน', 'จัดการข้อมูลติดต่อ ตำแหน่งงาน และรูปโปรไฟล์', `
+      <div class="profile-page-wrap">${profileForm()}</div>
+    `, 'profile');
     bindProfileForm();
   }
 
@@ -267,7 +281,7 @@
       selectedPeriod = period;
       save();
       toast('ส่งรายงานเรียบร้อยแล้ว', 'ผู้บริหารสามารถเห็นรายงานนี้ได้ในหน้าสรุป');
-      renderEmployee();
+      renderReportPage();
     });
   }
 
@@ -313,7 +327,7 @@
       currentUser = updated;
       save();
       toast('บันทึกโปรไฟล์แล้ว');
-      renderEmployee();
+      renderProfilePage();
     });
   }
 
@@ -529,6 +543,8 @@
   }
 
   if (page === 'employee') renderEmployee();
+  if (page === 'report') renderReportPage();
+  if (page === 'profile') renderProfilePage();
   if (page === 'executive') renderExecutive();
   if (page === 'admin') renderAdmin();
 })();
