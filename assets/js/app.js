@@ -5,6 +5,11 @@
   let selectedPeriod = WCStore.initialPeriod();
   let collaborators = [];
   let images = [];
+  const requestedPeriod = new URLSearchParams(window.location.search).get('period');
+
+  if (requestedPeriod === 'morning' || requestedPeriod === 'evening') {
+    selectedPeriod = requestedPeriod;
+  }
 
   const access = {
     employee: ['employee', 'executive', 'admin'],
@@ -83,19 +88,24 @@
 
   function shell(title, subtitle, content, active) {
     app.innerHTML = `
-      <div class="shell">
-        <aside class="sidebar">
-          <div class="brand">
-            <span class="brand-mark">WC</span>
-            <div><strong>Wealthy Creation</strong><small>Report System</small></div>
+      <div class="shell top-shell">
+        <header class="app-header">
+          <div class="header-main">
+            <div class="brand">
+              <span class="brand-mark">WC</span>
+              <div><strong>Wealthy Creation</strong><small>Daily Report System</small></div>
+            </div>
+            <div class="header-user">
+              ${avatar(currentUser)}
+              <div class="header-user-copy"><strong>${escapeHtml(currentUser.name)}</strong><span>${WCStore.roles[currentUser.role]} · ${escapeHtml(currentUser.position)}</span></div>
+              <button id="logoutButton" class="header-logout" type="button">ออกจากระบบ</button>
+            </div>
           </div>
-          <nav class="nav">${navItems(active)}</nav>
-          <div class="user-chip">${avatar(currentUser)}<div><strong>${escapeHtml(currentUser.name)}</strong><div class="muted">${WCStore.roles[currentUser.role]}</div></div></div>
-        </aside>
+          <nav class="top-nav">${navItems(active)}</nav>
+        </header>
         <main class="content">
           <div class="topbar">
-            <div><h1>${title}</h1><p>${subtitle}</p></div>
-            <button id="logoutButton" class="btn" type="button">ออกจากระบบ</button>
+            <div><span class="page-eyebrow">${WCStore.roles[currentUser.role]}</span><h1>${title}</h1><p>${subtitle}</p></div>
           </div>
           ${content}
         </main>
@@ -105,18 +115,64 @@
     app.querySelectorAll('[data-route]').forEach(button => {
       button.addEventListener('click', () => window.location.href = button.dataset.route);
     });
+    app.querySelectorAll('[data-scroll]').forEach(button => {
+      button.addEventListener('click', () => document.getElementById(button.dataset.scroll)?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+    });
+    app.querySelectorAll('[data-nav-period]').forEach(button => {
+      button.addEventListener('click', () => {
+        selectedPeriod = button.dataset.navPeriod;
+        if (page === 'executive') renderExecutive();
+        else window.location.href = `executive.html?period=${selectedPeriod}`;
+      });
+    });
+    app.querySelectorAll('[data-add-user]').forEach(button => {
+      button.addEventListener('click', () => openUserForm());
+    });
   }
 
   function navItems(active) {
-    const items = [
-      ['employee', 'employee.html', 'พนักงาน'],
-      ['executive', 'executive.html', 'ผู้บริหาร'],
-      ['admin', 'admin.html', 'แอดมิน']
-    ].filter(([key]) => access[key].includes(currentUser.role));
+    const items = [];
 
-    return items.map(([key, route, label]) => `
-      <button class="${active === key ? 'active' : ''}" data-route="${route}" type="button">${label}</button>
-    `).join('');
+    if (access.employee.includes(currentUser.role)) {
+      items.push(`
+        <div class="nav-menu">
+          <button class="nav-trigger ${active === 'employee' ? 'active' : ''}" type="button">พื้นที่พนักงาน</button>
+          <div class="nav-dropdown">
+            <button data-route="employee.html" type="button"><strong>ภาพรวมของฉัน</strong><span>สถานะรายงานประจำวัน</span></button>
+            <button data-route="employee.html#reportFormPanel" data-scroll="reportFormPanel" type="button"><strong>เขียนรายงาน</strong><span>รายงานเช้าและเย็น</span></button>
+            <button data-route="employee.html#profilePanel" data-scroll="profilePanel" type="button"><strong>โปรไฟล์ของฉัน</strong><span>แก้ไขข้อมูลติดต่อ</span></button>
+          </div>
+        </div>
+      `);
+    }
+
+    if (access.executive.includes(currentUser.role)) {
+      items.push(`
+        <div class="nav-menu">
+          <button class="nav-trigger ${active === 'executive' ? 'active' : ''}" type="button">รายงานผู้บริหาร</button>
+          <div class="nav-dropdown">
+            <button data-route="executive.html" type="button"><strong>ภาพรวมรายงาน</strong><span>สถานะพนักงานทั้งหมด</span></button>
+            <button data-nav-period="morning" type="button"><strong>รายงานช่วงเช้า</strong><span>${WCStore.periodLabel('morning')}</span></button>
+            <button data-nav-period="evening" type="button"><strong>รายงานช่วงเย็น</strong><span>${WCStore.periodLabel('evening')}</span></button>
+          </div>
+        </div>
+      `);
+    }
+
+    if (access.admin.includes(currentUser.role)) {
+      items.push(`
+        <div class="nav-menu">
+          <button class="nav-trigger ${active === 'admin' ? 'active' : ''}" type="button">จัดการระบบ</button>
+          <div class="nav-dropdown">
+            <button data-route="admin.html" type="button"><strong>ภาพรวมระบบ</strong><span>ผู้ใช้และรายงานทั้งหมด</span></button>
+            <button data-scroll="usersPanel" type="button"><strong>จัดการผู้ใช้</strong><span>แก้ไขหรือลบผู้ใช้</span></button>
+            <button data-add-user type="button"><strong>เพิ่มผู้ใช้ใหม่</strong><span>สร้างบัญชีพนักงาน</span></button>
+          </div>
+        </div>
+      `);
+    }
+
+    return `<button class="nav-home ${active === page ? 'active' : ''}" data-route="${page}.html" type="button">หน้าหลัก</button>${items.join('')}`;
   }
 
   function renderEmployee() {
@@ -131,7 +187,7 @@
         ${reportForm()}
         ${profileForm()}
       </div>
-      <section class="panel" style="margin-top:18px">
+      <section id="myReportsPanel" class="panel anchor-panel" style="margin-top:18px">
         <div class="section-head"><h2>รายงานของฉันวันนี้</h2></div>
         ${reportList(mine)}
       </section>
@@ -150,7 +206,7 @@
       .join('');
 
     return `
-      <section class="panel">
+      <section id="reportFormPanel" class="panel anchor-panel">
         <div class="section-head"><h2>เขียนรายงาน</h2><span class="badge amber">${WCStore.todayKey()}</span></div>
         <form id="reportForm" class="form-stack">
           <div class="grid two">
@@ -230,7 +286,7 @@
 
   function profileForm() {
     return `
-      <section class="panel">
+      <section id="profilePanel" class="panel anchor-panel">
         <div class="section-head"><h2>โปรไฟล์</h2>${avatar(currentUser, 'large')}</div>
         <form id="profileForm" class="form-stack">
           <label>ชื่อ<input id="profileName" value="${escapeHtml(currentUser.name)}" readonly></label>
@@ -271,7 +327,7 @@
         <div class="stat"><span>ส่งรายงานเช้า</span><strong>${morningSent}/${staff.length}</strong></div>
         <div class="stat"><span>ส่งรายงานเย็น</span><strong>${eveningSent}/${staff.length}</strong></div>
       </div>
-      <section class="panel" style="margin-top:18px">
+      <section id="executiveStatusPanel" class="panel anchor-panel" style="margin-top:18px">
         <div class="section-head">
           <h2>การแจ้งเตือนรายงานประจำวันที่ ${WCStore.todayKey()}</h2>
           <div class="actions">
@@ -281,7 +337,7 @@
         </div>
         ${statusTable(staff)}
       </section>
-      <section class="panel" style="margin-top:18px">
+      <section id="usersPanel" class="panel anchor-panel" style="margin-top:18px">
         <div class="section-head"><h2>รายงานล่าสุด</h2></div>
         ${reportList([...todayReports()].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 8))}
       </section>
