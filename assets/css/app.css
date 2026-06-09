@@ -376,6 +376,27 @@ tbody tr:hover { background: #f8fafc; }
   align-content: space-between;
   padding: 8px 20px 8px 8px;
   color: #fff;
+  overflow: hidden;
+  border-radius: 28px;
+  background:
+    linear-gradient(110deg, rgba(18, 91, 151, 0.88), rgba(20, 116, 186, 0.68)),
+    url("../images/login-bg.jpg.png") center/cover;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+
+.login-welcome::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 22% 84%, rgba(255, 255, 255, 0.16), transparent 34%),
+    linear-gradient(90deg, rgba(6, 38, 68, 0.16), rgba(6, 38, 68, 0.02));
+  pointer-events: none;
+}
+
+.login-welcome > * {
+  position: relative;
+  z-index: 1;
 }
 
 .login-brand .brand-mark {
