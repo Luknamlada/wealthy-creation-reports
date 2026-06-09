@@ -321,7 +321,9 @@ tbody tr:hover { background: #f8fafc; }
   display: grid;
   place-items: center;
   padding: 32px;
-  background: #f4f8fc;
+  background:
+    linear-gradient(rgba(238, 247, 255, 0.68), rgba(226, 241, 252, 0.74)),
+    url("../images/login-bg.jpg.png") center/cover fixed no-repeat;
 }
 
 .login-page .login-layout {
@@ -336,9 +338,8 @@ tbody tr:hover { background: #f8fafc; }
   padding: 48px;
   border: 1px solid rgba(191, 219, 254, 0.72);
   border-radius: 38px;
-  background:
-    linear-gradient(110deg, rgba(12, 77, 132, 0.82), rgba(20, 116, 186, 0.58)),
-    url("../images/login-bg.jpg.png") center/cover no-repeat;
+  background: linear-gradient(110deg, rgba(10, 91, 154, 0.88), rgba(7, 111, 174, 0.78));
+  backdrop-filter: blur(8px);
   box-shadow: 0 30px 80px rgba(30, 64, 175, 0.18);
 }
 
@@ -550,7 +551,9 @@ tbody tr:hover { background: #f8fafc; }
   .login-page {
     display: block;
     padding: 0;
-    background: #1474ba;
+    background:
+      linear-gradient(rgba(238, 247, 255, 0.7), rgba(226, 241, 252, 0.78)),
+      url("../images/login-bg.jpg.png") center/cover fixed no-repeat;
   }
 
   .login-page .login-layout {
