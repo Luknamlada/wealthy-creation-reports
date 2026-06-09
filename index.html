@@ -11,36 +11,46 @@
 </head>
 <body class="login-page">
   <main class="login-layout">
-    <section class="login-card">
-      <div class="brand">
+    <section class="login-welcome">
+      <div class="brand login-brand">
         <span class="brand-mark">WC</span>
         <div><strong>Wealthy Creation</strong><small>Daily Report System</small></div>
       </div>
+      <div class="welcome-copy">
+        <span class="cover-label">WEALTHY CREATION</span>
+        <h1>ยินดีต้อนรับ</h1>
+        <h2>ระบบรายงานข้อมูลพนักงาน</h2>
+        <p>สรุปงานประจำวัน ติดตามสถานะของทีม และจัดการข้อมูลได้อย่างเป็นระเบียบในที่เดียว</p>
+      </div>
+      <div class="welcome-note">
+        <strong>รายงานครบ เข้าใจง่าย</strong>
+        <span>รองรับรายงานช่วงเช้าและเย็น พร้อมแนบภาพและเพิ่มผู้ร่วมงาน</span>
+      </div>
+    </section>
 
+    <section class="login-form-card">
       <div class="login-copy">
-        <span class="eyebrow">ยินดีต้อนรับ</span>
-        <h1>เข้าสู่ระบบรายงานพนักงาน</h1>
-        <p>จัดการรายงานประจำวันและติดตามงานของทีมได้ในที่เดียว</p>
+        <span class="eyebrow">เข้าสู่ระบบ</span>
+        <h2>สวัสดีอีกครั้ง</h2>
+        <p>กรอกรหัสพนักงานและรหัสผ่านเพื่อเข้าสู่พื้นที่ของคุณ</p>
       </div>
 
       <form id="loginForm" class="form-stack">
         <label>รหัสพนักงาน<input id="employeeCode" autocomplete="username" placeholder="เช่น WC002 หรือ ADMIN" required></label>
-        <label>รหัสผ่าน<input id="password" type="password" autocomplete="current-password" placeholder="กรอกรหัสผ่าน" required></label>
+        <label>รหัสผ่าน
+          <span class="password-field">
+            <input id="password" type="password" autocomplete="current-password" placeholder="กรอกรหัสผ่าน" required>
+            <button id="togglePassword" type="button">แสดง</button>
+          </span>
+        </label>
+        <label class="remember-row"><input id="rememberMe" type="checkbox"> <span>จดจำการเข้าสู่ระบบ</span></label>
         <p id="loginError" class="form-error" aria-live="polite"></p>
-        <button class="btn primary wide" type="submit">เข้าสู่ระบบ</button>
+        <button class="btn primary wide login-submit" type="submit">เข้าสู่ระบบ</button>
       </form>
 
       <div class="soft-alert">
         <strong>บัญชีทดลอง</strong>
-        <span>พนักงาน WC002 / WC002 · ผู้บริหาร WC001 / WC001 · แอดมิน ADMIN / admin123</span>
-      </div>
-    </section>
-
-    <section class="login-cover">
-      <div>
-        <span class="cover-label">WEALTHY CREATION</span>
-        <h2>สรุปงานชัดเจน<br>บริหารทีมได้ง่ายขึ้น</h2>
-        <p>รายงานเช้าและเย็น พร้อมภาพประกอบและสถานะการส่งของทั้งทีม</p>
+        <span>พนักงาน WC002 / WC002<br>ผู้บริหาร WC001 / WC001<br>แอดมิน ADMIN / admin123</span>
       </div>
     </section>
   </main>

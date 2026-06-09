@@ -9,6 +9,13 @@
     admin: 'admin.html'
   };
 
+  document.getElementById('togglePassword').addEventListener('click', event => {
+    const password = document.getElementById('password');
+    const showing = password.type === 'text';
+    password.type = showing ? 'password' : 'text';
+    event.currentTarget.textContent = showing ? 'แสดง' : 'ซ่อน';
+  });
+
   form.addEventListener('submit', event => {
     event.preventDefault();
     const code = document.getElementById('employeeCode').value.trim().toUpperCase();
@@ -20,7 +27,7 @@
       return;
     }
 
-    WCStore.setSession(user.id);
+    WCStore.setSession(user.id, document.getElementById('rememberMe').checked);
     window.location.href = routeByRole[user.role] || 'employee.html';
   });
 })();

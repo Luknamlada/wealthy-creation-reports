@@ -78,15 +78,18 @@
   }
 
   function getSession() {
-    return sessionStorage.getItem(SESSION_KEY);
+    return sessionStorage.getItem(SESSION_KEY) || localStorage.getItem(SESSION_KEY);
   }
 
-  function setSession(userId) {
-    sessionStorage.setItem(SESSION_KEY, userId);
+  function setSession(userId, remember = false) {
+    clearSession();
+    const storage = remember ? localStorage : sessionStorage;
+    storage.setItem(SESSION_KEY, userId);
   }
 
   function clearSession() {
     sessionStorage.removeItem(SESSION_KEY);
+    localStorage.removeItem(SESSION_KEY);
   }
 
   function todayKey() {
