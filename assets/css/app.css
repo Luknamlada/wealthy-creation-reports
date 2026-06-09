@@ -20,7 +20,7 @@
 body {
   margin: 0;
   min-height: 100vh;
-  font-family: "Noto Sans Thai", Tahoma, Arial, sans-serif;
+  font-family: "Anuphan", Tahoma, Arial, sans-serif;
   color: var(--ink);
   background:
     radial-gradient(circle at top left, rgba(125, 211, 252, 0.2), transparent 28%),
@@ -320,22 +320,26 @@ tbody tr:hover { background: #f8fafc; }
 .login-page {
   display: grid;
   place-items: center;
-  padding: 32px;
+  height: 100dvh;
+  min-height: 560px;
+  overflow: hidden;
+  padding: 18px;
   background: #f4f8fc;
 }
 
 .login-page .login-layout {
   position: relative;
-  width: min(1180px, 100%);
-  min-height: min(720px, calc(100vh - 64px));
+  width: min(1080px, 100%);
+  height: min(650px, calc(100dvh - 36px));
+  min-height: 540px;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 420px;
-  gap: 30px;
+  grid-template-columns: minmax(0, 1fr) 390px;
+  gap: 24px;
   align-items: center;
   overflow: hidden;
-  padding: 48px;
+  padding: 34px;
   border: 1px solid rgba(191, 219, 254, 0.72);
-  border-radius: 38px;
+  border-radius: 34px;
   background: #1474ba;
   box-shadow: 0 30px 80px rgba(30, 64, 175, 0.18);
 }
@@ -374,7 +378,7 @@ tbody tr:hover { background: #f8fafc; }
   align-self: stretch;
   display: grid;
   align-content: space-between;
-  padding: 8px 20px 8px 8px;
+  padding: 4px 16px 4px 4px;
   color: #fff;
 }
 
@@ -390,7 +394,7 @@ tbody tr:hover { background: #f8fafc; }
 
 .welcome-copy {
   max-width: 570px;
-  padding: 48px 0;
+  padding: 24px 0;
 }
 
 .welcome-copy .cover-label {
@@ -398,16 +402,18 @@ tbody tr:hover { background: #f8fafc; }
 }
 
 .welcome-copy h1 {
-  margin: 10px 0 0;
-  font-size: clamp(48px, 6vw, 76px);
-  line-height: 1.05;
+  margin: 8px 0 0;
+  font-size: clamp(42px, 5vw, 62px);
+  line-height: 1.08;
+  font-weight: 700;
   letter-spacing: 0;
 }
 
 .welcome-copy h2 {
-  margin: 14px 0 16px;
+  margin: 10px 0 12px;
   color: #e0f2fe;
-  font-size: 21px;
+  font-size: 18px;
+  font-weight: 600;
   letter-spacing: 0;
 }
 
@@ -415,15 +421,15 @@ tbody tr:hover { background: #f8fafc; }
   max-width: 530px;
   margin: 0;
   color: rgba(255, 255, 255, 0.78);
-  font-size: 15px;
-  line-height: 1.9;
+  font-size: 13px;
+  line-height: 1.8;
 }
 
 .welcome-note {
   display: grid;
   gap: 4px;
   max-width: 500px;
-  padding: 14px 16px;
+  padding: 11px 14px;
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 20px;
   background: rgba(255, 255, 255, 0.08);
@@ -439,8 +445,8 @@ tbody tr:hover { background: #f8fafc; }
   position: relative;
   z-index: 2;
   display: grid;
-  gap: 22px;
-  padding: 34px;
+  gap: 16px;
+  padding: 27px;
   border: 1px solid rgba(255, 255, 255, 0.82);
   border-radius: 30px;
   background: rgba(255, 255, 255, 0.96);
@@ -448,12 +454,14 @@ tbody tr:hover { background: #f8fafc; }
 }
 
 .login-form-card .login-copy h2 {
-  margin: 6px 0;
-  font-size: 32px;
+  margin: 4px 0;
+  font-size: 27px;
+  font-weight: 700;
 }
 
 .login-form-card .login-copy p {
-  font-size: 13px;
+  font-size: 12px;
+  line-height: 1.6;
 }
 
 .login-form-card input {
@@ -504,7 +512,7 @@ tbody tr:hover { background: #f8fafc; }
 }
 
 .login-submit {
-  min-height: 48px;
+  min-height: 44px;
   box-shadow: 0 14px 28px rgba(37, 99, 235, 0.22);
 }
 
@@ -515,25 +523,30 @@ tbody tr:hover { background: #f8fafc; }
 
 @media (max-width: 1024px) {
   .login-page {
-    padding: 20px;
+    padding: 14px;
   }
 
   .login-page .login-layout {
-    grid-template-columns: minmax(0, 1fr) 390px;
-    min-height: calc(100vh - 40px);
-    padding: 34px;
+    width: min(960px, 100%);
+    height: calc(100dvh - 28px);
+    grid-template-columns: minmax(0, 1fr) 370px;
+    padding: 28px;
   }
 }
 
 @media (max-width: 820px) {
   .login-page {
     display: block;
+    height: auto;
+    min-height: 100dvh;
+    overflow: auto;
     padding: 0;
     background: #1474ba;
   }
 
   .login-page .login-layout {
     width: 100%;
+    height: auto;
     min-height: 100vh;
     grid-template-columns: 1fr;
     gap: 24px;
@@ -565,6 +578,44 @@ tbody tr:hover { background: #f8fafc; }
     width: min(480px, 100%);
     justify-self: center;
     padding: 28px;
+  }
+}
+
+@media (min-width: 821px) and (max-height: 700px) {
+  .login-page {
+    min-height: 500px;
+    padding: 10px;
+  }
+
+  .login-page .login-layout {
+    height: calc(100dvh - 20px);
+    min-height: 500px;
+    padding: 24px 28px;
+  }
+
+  .welcome-copy {
+    padding: 14px 0;
+  }
+
+  .welcome-copy h1 {
+    font-size: 42px;
+  }
+
+  .welcome-note {
+    display: none;
+  }
+
+  .login-form-card {
+    gap: 12px;
+    padding: 22px 25px;
+  }
+
+  .login-form-card .form-stack {
+    gap: 10px;
+  }
+
+  .login-form-card .soft-alert {
+    padding: 10px 13px;
   }
 }
 
